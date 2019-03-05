@@ -366,6 +366,13 @@ config INPUT_KXTJ9
 	  To compile this driver as a module, choose M here: the module will
 	  be called kxtj9.
 
+config INPUT_KXTJ9_HQ
+	tristate "Kionix KXTJ9 tri-axis digital accelerometer (HQ variant)"
+	depends on I2C
+	help
+	  Say Y here to enable support for the Kionix KXTJ9 digital tri-axis
+	  accelerometer.
+
 config INPUT_KXTJ9_POLLED_MODE
 	bool "Enable polling mode support"
 	depends on INPUT_KXTJ9
@@ -745,6 +752,16 @@ config SENSORS_AP3426
 	  To compile this driver as a module, choose M here: the
 	  module will be called ap3426.
 
+config SENSORS_AP3426_CM
+	tristate "AP3426 3-in-1 digital ALPS+PS+IRLED sensor driver (CM variant)"
+	depends on I2C
+	help
+	  Say Y here if you want to enable the AP3426 ALPS sensor
+	  driver (CM variant).
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called ap3426.
+
 config SENSORS_LTR553
 	tristate "LTR553 light and proximity device driver"
 	depends on I2C
@@ -764,6 +781,22 @@ config SENSORS_MMC3416X
 
 	  To compile this driver as a module, choose M here: the
 	  module will be called mmc3416x.
+
+config SENSORS_MMC3416X_CM
+	tristate "MMC3416xPJ 3-axis magnetic sensor driver"
+	depends on I2C
+	help
+	  Say Y here if you want to enable the MMC3416xPJ magnetic sensor
+	  driver.
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called mmc3416x.
+
+config SENSORS_MMC3416X_ALLOW_OVERFLOW
+	tristate "MMC3416X sensor overflow check"
+	depends on SENSORS_MMC3416X_CM
+	help
+	  Say Y here if you want to allow overflow in MMC3416X sensor.
 
 config SENSORS_MMC3X30
 	tristate "MMC3X30KJ 3-axis magnetic sensor driver"
