@@ -31,7 +31,6 @@
 #include <linux/proc_fs.h>
 #include <linux/regulator/consumer.h>
 #include <linux/sensors.h>
-#include <linux/miscdevice.h>
 #ifdef CONFIG_HAS_EARLYSUSPEND
 #include <linux/earlysuspend.h>
 #endif /* CONFIG_HAS_EARLYSUSPEND */
@@ -188,7 +187,6 @@
 /* Timeout (miliseconds) */
 #define KIONIX_ACCEL_EARLYSUSPEND_TIMEOUT	5000
 
-#define SENSOR_NAME 			"kionix"
 /*
  * The following table lists the maximum appropriate poll interval for each
  * available output data rate (ODR).
@@ -2253,10 +2251,6 @@ static int kionix_write_cal_params(struct sensors_classdev *sensors_cdev,
 
 	return 0;
 }
-static struct miscdevice kionix_device = {
-	.minor = MISC_DYNAMIC_MINOR,
-	.name = SENSOR_NAME,
-};
 
 static int kionix_accel_probe(struct i2c_client *client,
 			      const struct i2c_device_id *id)
@@ -2499,12 +2493,6 @@ static int kionix_accel_probe(struct i2c_client *client,
 		KMSGERR(&acceld->client->dev,
 			"%s: sysfs_create_group returned err = %d. Abort.\n",
 			__func__, err);
-		goto err_free_irq;
-	}
-	err = misc_register(&kionix_device);
-	if (err) {
-		KMSGERR(&acceld->client->dev, "%s: misc_regiter returned err = %d. Abort.\n",__func__, err);
-		sysfs_remove_group(&acceld->input_dev->dev.kobj, &kionix_accel_attribute_group);
 		goto err_free_irq;
 	}
 #ifdef CONFIG_HAS_EARLYSUSPEND
